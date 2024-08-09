@@ -1,4 +1,4 @@
-import { alpha, AppBar, Box, InputBase, styled, Toolbar, Typography } from "@mui/material";
+import { alpha, AppBar, Box, Button, InputBase, styled, Toolbar, Typography } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 
 const Logo = styled('img')(() => ({
@@ -10,16 +10,17 @@ const Search = styled('div')(({ theme }) =>({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: alpha(theme.palette.common.black, 0.15),
+    //backgroundColor: alpha(theme.palette.common.white, 1),
+    boxShadow: '1px 1px 3px #D9D9D9',
     borderRadius: '4px',
-    padding: '0 5px',
     ':hover': {
-        backgroundColor: alpha(theme.palette.common.black, 0.3),
+        backgroundColor: alpha(theme.palette.common.black, 0.05),
     },
 }));
 
 const SearchInputStyled = styled(InputBase)(() => ({
-    color: 'inherit',
+    color: 'black',
+    fontSize: 'small',
     backgroundColor: 'transparent',
   }));
 
@@ -35,24 +36,29 @@ function Header() {
                 <AppBar sx={{
                     backgroundColor: 'white'
                 }}>
-                    <Toolbar>
-                        <Logo src="/img/icone.png"></Logo>
-                        <Typography
-                        variant="body2"
-                        noWrap
-                        component="div"
-                        padding={'1rem'}
-                        >
-                            CoreNotes
-                        </Typography>
+                    <Toolbar sx={{padding:'0 0.3rem', justifyContent:'space-between'}}>
+                        <Box sx={{display:'flex', alignItems:'center'}}>
+                            <Logo src="/img/icone.png"></Logo>
+                            <Typography
+                            variant="body2"
+                            noWrap
+                            component="div"
+                            sx={{color:'black', padding:'0 0.3rem'}}
+                            >
+                                CoreNotes
+                            </Typography>
+                        </Box>
+                        
                         <Search>
-                            <SearchInputStyled
-                                placeholder="Pesquisar notas..."
-                                sx={{fontSize: 'small'}}
-                                >
+                            <SearchInputStyled placeholder="Pesquisar notas..."
+                            sx={{margin:"0 1rem"}}
+                            >
                             </SearchInputStyled>
 
-                            <SearchIcon sx={{backgroundColor: 'transparent'}}/>
+                            <Button variant="text" sx={{width:'1rem'}}>
+                                <SearchIcon sx={{backgroundColor: 'transparent', color:'darkgrey', height:'1.2rem'}}/>
+                            </Button>
+                            
                         </Search>
 
                     </Toolbar>

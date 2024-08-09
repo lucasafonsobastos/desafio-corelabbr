@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Box, InputBase, InputLabel, styled } from "@mui/material";
+import { Box, Button, IconButton, InputBase, styled } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import AddIcon from '@mui/icons-material/Add';
 
 
 const EditNota = styled(Box)(() => ({
@@ -10,9 +11,10 @@ const EditNota = styled(Box)(() => ({
     boxShadow: '1px 1px 5px #D9D9D9',
     borderRadius: '25px',
     minHeight: '105px',
-    width: '100%',
+    width: '70%',
     maxWidth: '530px',
     overflow: 'hidden',
+    backgroundColor:'#FFFFFF'
 }));
 
 const Line = styled('span')(() => ({
@@ -29,18 +31,33 @@ const BtFavorite = styled('div')(() => ({
 
 function NewNote(){
 
-    const [favorite, setFavorite] = React.useState<null | HTMLElement>(false);
+    const [favorite, setFavorite] = React.useState<null | HTMLElement>(null);
+    const [titleNote, setTitleNote] = React.useState<null | HTMLTextAreaElement>(null);
+    const [textNote, setTextNote] = React.useState<null | HTMLTextAreaElement>(null);
 
-    const handleFavorite = (event: React.MouseEvent<null | HTMLElement>) => {
-        setFavorite(true);
+    const onChangeTitleNote = (event: React.ChangeEvent) => {
+        setTitleNote(event.currentTarget.value)
+    }
+
+    const onChangeTextNote = (event: React.ChangeEvent) => {
+        setTextNote(event.currentTarget.value)
+    }
+
+    const handleFavorite = () => {
+        //setFavorite(true);
+        if(favorite){
+            setFavorite(false);
+        } else {
+            setFavorite(true);
+        }
+
     }
 
     const isFavorite = () => {
         if(favorite){
-            return (<StarIcon></StarIcon>)
-            
+            return (<StarIcon sx={{color:'#FFA000'}}></StarIcon>)
         } else {
-            return (<StarBorderIcon></StarBorderIcon>)
+            return (<StarBorderIcon ></StarBorderIcon>)
         }
     }
 
@@ -50,9 +67,8 @@ function NewNote(){
                 <Box sx={{
                     display: 'flex', alignItems: 'center', padding: '.2rem 1rem', justifyContent: 'space-between'
                 }}>
-                    <InputLabel sx={{ fontWeight:'bold', fontSize: 'smaller'}}>Título</InputLabel>
-                    <InputBase sx={{
-                        padding: '0 1rem',
+                    <InputBase value={titleNote} onChange={onChangeTitleNote} placeholder="Título" sx={{
+                        padding: '0 .5rem', width: '100%', textTransform:'uppercase'
                     }}>
                     </InputBase>
                     <BtFavorite onClick={handleFavorite}>
@@ -61,11 +77,17 @@ function NewNote(){
                 </Box>
                 <Line></Line>
                 <Box>
-                    <InputBase multiline placeholder="criar nota..." sx={{
+                    
+                    <InputBase value={textNote} onChange={onChangeTextNote} multiline placeholder="criar nota..." sx={{
                         padding: '0.5rem 1rem', fontSize: 'smaller', width: '100%',
                     }}>
                     </InputBase>
                 </Box>
+                {textNote &&
+                    <IconButton aria-label="Adicionar Nota" sx={{alignSelf:'flex-end'}}>
+                        <AddIcon sx={{color:'#20f920'}}></AddIcon>
+                    </IconButton>
+                }
             </EditNota>
         </>
     )
