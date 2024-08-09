@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Button, IconButton, InputBase, styled } from "@mui/material";
+import { Box, IconButton, InputBase, styled } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import AddIcon from '@mui/icons-material/Add';
@@ -9,7 +9,7 @@ const EditNota = styled(Box)(() => ({
     display: 'flex',
     flexDirection: 'column',
     boxShadow: '1px 1px 5px #D9D9D9',
-    borderRadius: '25px',
+    borderRadius: '20px',
     minHeight: '105px',
     width: '70%',
     maxWidth: '530px',
@@ -36,7 +36,7 @@ function NewNote(){
     const [textNote, setTextNote] = React.useState<null | HTMLTextAreaElement>(null);
 
     const onChangeTitleNote = (event: React.ChangeEvent) => {
-        setTitleNote(event.currentTarget.value)
+        setTitleNote(event.target.value)
     }
 
     const onChangeTextNote = (event: React.ChangeEvent) => {
