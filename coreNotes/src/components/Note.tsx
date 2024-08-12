@@ -1,14 +1,16 @@
 import * as React from "react";
-import { Box, IconButton, styled, Typography } from "@mui/material";
+import { Box, IconButton, styled, TextField, Typography } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
-import EditIcon from '@mui/icons-material/Edit';
-import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
-import ClearIcon from '@mui/icons-material/Clear';
+import OptionsNote from "./OptionsNote";
 
-//testes
-import Conteudo from '../../public/json/notas.json';
-const cores = Conteudo.cores;
+import { getCores, updateNota } from "../services/notaService";
+
+export interface NotaProps {
+    nota:any,
+    onDelete: (id:number) => void,
+    onUpdate: (notaAtualizada: any) => void,
+}
 
 const BlocoNota = styled(Box)(() => ({
     display: 'flex',
@@ -27,61 +29,96 @@ const Line = styled('span')(() => ({
     backgroundColor: 'rgba(0,0,0, 0.2)',
 }));
 
-const BtFavorite = styled('div')(() => ({
-
+const TextConteudo = styled(TextField)(() => ({
+    display:'flex',
+    backgroundColor:'transparent',
 }));
 
-const ColorNote = styled('span')(() =>({
-    width:'2.1rem', height:'2.1rem',
-    borderRadius:'100%',
-    alignItems:'center',
-}));
+function Note (props: NotaProps) {
 
-const bkCor = (id) =>{
-    cores.map()
-}
+    const {nota, onDelete, onUpdate} = props;
+    //onAtualiza = Objeto{...}
 
-function Note ({nota}) {
+    const [cores, setCores] = React.useState<any[]>([]);
+    const [newCor, setNewCor] = React.useState<number>(0);
+
+    const [favorite, setFavorite] = React.useState(nota.favorito);
+
+    const notaAtualizada = nota;
+
+    //carrega as cores estabelecidas
+    const fetchCores = async () => {
+        try {
+            const data = await getCores();
+            setCores(data);
+        } catch (error) {
+            console.error('Erro ao buscar cores:', error);
+        }
+    };
+
+    React.useEffect(() => {
+        fetchCores();
+    }, []);
+
+    const fetchUpdateCor = async (novaCor: number) => {
+        notaAtualizada.cor_id = novaCor;
+        fetchAtualiza();
+    };
+
+    const fetchAtualiza = async () => {
+        try {
+            await updateNota(notaAtualizada);
+            onUpdate(notaAtualizada);
+            
+        } catch (error) {
+            console.error('Erro ao atualizar a nota:', error);
+        }
+    };
+
+    const handleFavorito = () =>{
+        if(favorite){
+            setFavorite(false);
+            notaAtualizada.favorito = false;
+        } else {
+            setFavorite(true);
+            notaAtualizada.favorito = true
+        }
+        fetchAtualiza();
+    }
+
+    const corAtual = cores.find(cor => cor.id === nota.cor_id)?.cor || '';
 
     return (
-        <BlocoNota>
+        <BlocoNota sx={{backgroundColor:corAtual}}>
             <Box sx={{
-                display: 'flex', alignItems: 'center', padding: '.2rem 1rem', justifyContent: 'space-between'
+                display: 'flex', 
+                alignItems: 'center', 
+                padding: '.2rem 1rem', 
+                justifyContent: 'space-between'
             }}>
                 <Typography sx={{
                     padding: '0 .5rem', width: '100%'
-                }}> {nota.title}
+                }}> {nota.titulo}
                 </Typography>
-                <BtFavorite>
-                    {nota.favorite ? <StarIcon sx={{color:'#FFA000'}} /> : <StarBorderIcon/>}
-                </BtFavorite>
+                <IconButton onClick={handleFavorito}>
+                    {nota.favorito ? <StarIcon sx={{color:'#FFA000'}} /> : <StarBorderIcon/>}
+                </IconButton>
+
             </Box>
-            <Line></Line>
+            {corAtual != '' ? <Line sx={{backgroundColor:'#FFFFFF'}} /> : <Line/> }
             <Box sx={{height:'70%'}}>
-                <Typography sx={{
-                    padding: '.5rem', 
-                    fontSize: 'small', 
-                    opacity:'0.6',
-                    textAlign:'justfy'
-                }}>
-                    {nota.text}
-                </Typography>
+                <TextConteudo>
+                    {nota.conteudo}
+                </TextConteudo>
             </Box>
-            <Box sx={{
-                display: 'flex',
-                alignItems:'center', 
-                justifyContent: 'space-between',
-            }}>
-                <Box>
-                    <IconButton><EditIcon></EditIcon></IconButton>
-                    <IconButton>
-                        <ColorNote>
-                            <FormatColorFillIcon></FormatColorFillIcon>
-                        </ColorNote>
-                    </IconButton>
-                </Box>
-                <IconButton><ClearIcon></ClearIcon></IconButton>
-            </Box>
+            <OptionsNote 
+                cores={cores} 
+                notaId={nota.id} 
+                attCor={setNewCor}
+                onDelete={onDelete}
+                attNota={fetchUpdateCor}>
+            </OptionsNote>
+            
         </BlocoNota>
     )
 }

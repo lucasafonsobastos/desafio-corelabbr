@@ -4,27 +4,23 @@ import Conteiner from '@mui/material/Container';
 import NewNote from './components/NewNote';
 import Holding from './components/Holding';
 
+import { NotasProvider } from './components/NotasContext';
+
 function App() {
 
-  return (
-    <Conteiner maxWidth='lg' sx={{
-      backgroundColor:'#F0F2F5', 
-      height:'100vh',
-      width:'100vw',
-      }}>
-      <Header></Header>
-
-      <Box sx={{
-        marginTop: '5rem',
-        display: 'flex' , 
-        alignContent: 'center', 
-        justifyContent: 'center'}}>
-        <NewNote></NewNote>
-      </Box>
-
-      <Holding></Holding>
-    </Conteiner>
-  )
+    return (
+        <Conteiner maxWidth='lg' sx={{
+        backgroundColor:'#F0F2F5', 
+        height:'100vh',
+        width:'100vw',
+        }}>
+            <NotasProvider>
+                <Header></Header>
+                <Holding></Holding>
+            </NotasProvider>
+        
+        </Conteiner>
+    )
 }
 
 export default App;

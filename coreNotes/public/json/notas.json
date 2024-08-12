@@ -5,7 +5,7 @@
             "title": "Titulo 1",
             "favorite":true,
             "text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-            "cor_id": 1
+            "cor_id":1
         },
         {
             "id":2,
@@ -19,7 +19,7 @@
             "title": "Titulo 3",
             "favorite":true,
             "text":"The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.",
-            "cor_id": 5
+            "cor_id":5
         }
     ],
     "cores":[

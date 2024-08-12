@@ -1,11 +1,13 @@
 import * as React from "react";
-import { Box, IconButton, InputBase, styled } from "@mui/material";
+import { Alert, Box, IconButton, InputBase, styled } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import AddIcon from '@mui/icons-material/Add';
+import { createNota } from "../services/notaService";
+//import { useNotasContext } from "./NotasContext";
 
 
-const EditNota = styled(Box)(() => ({
+const EditNota = styled('form')(() => ({
     display: 'flex',
     flexDirection: 'column',
     boxShadow: '1px 1px 5px #D9D9D9',
@@ -29,19 +31,15 @@ const BtFavorite = styled('div')(() => ({
 
 
 
-function NewNote(){
+function NewNote( {onAddNota }:{onAddNota: (nota:any) => void}){
+    //const { notas, setNotas } = useNotasContext();
 
-    const [favorite, setFavorite] = React.useState<null | HTMLElement>(null);
-    const [titleNote, setTitleNote] = React.useState<null | HTMLTextAreaElement>(null);
-    const [textNote, setTextNote] = React.useState<null | HTMLTextAreaElement>(null);
+    const [favorite, setFavorite] = React.useState(false);
+    const [titleNote, setTitleNote] = React.useState('');
+    const [textNote, setTextNote] = React.useState('');
 
-    const onChangeTitleNote = (event: React.ChangeEvent) => {
-        setTitleNote(event.target.value)
-    }
+    //const [alert, setAlert] = React.useState(false);
 
-    const onChangeTextNote = (event: React.ChangeEvent) => {
-        setTextNote(event.currentTarget.value)
-    }
 
     const handleFavorite = () => {
         //setFavorite(true);
@@ -61,15 +59,38 @@ function NewNote(){
         }
     }
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            // verificar se nao tem nenhuma opção vazia...
+            if(titleNote == '' || textNote == ''){
+                <Alert severity="warning">Sua Nota esta sem TÍTULO ou se CONTEUDO para ser salvo. Revise-a!</Alert>
+            } else {
+                const novaNota = await createNota(titleNote, textNote, 0, favorite);
+                onAddNota(novaNota);
+                setTitleNote('');
+                setTextNote('');
+                setFavorite(false);
+            }
+
+        } catch (error) {
+            console.error('Erro ao criar nota', error);
+            <Alert severity="error">Erro ao criar a nota.</Alert>
+        }
+    }
+
     return (
         <>
-            <EditNota>
+            <EditNota onSubmit={handleSubmit}>
                 <Box sx={{
                     display: 'flex', alignItems: 'center', padding: '.2rem 1rem', justifyContent: 'space-between'
                 }}>
-                    <InputBase value={titleNote} onChange={onChangeTitleNote} placeholder="Título" sx={{
-                        padding: '0 .5rem', width: '100%', textTransform:'uppercase'
-                    }}>
+                    <InputBase value={titleNote} 
+                        onChange={(e) => setTitleNote(e.target.value)} 
+                        placeholder="Título" 
+                        sx={{
+                            padding: '0 .5rem', width: '100%', textTransform:'uppercase'
+                        }}>
                     </InputBase>
                     <BtFavorite onClick={handleFavorite}>
                         {isFavorite()}
@@ -78,13 +99,19 @@ function NewNote(){
                 <Line></Line>
                 <Box>
                     
-                    <InputBase value={textNote} onChange={onChangeTextNote} multiline placeholder="criar nota..." sx={{
-                        padding: '0.5rem 1rem', fontSize: 'smaller', width: '100%',
-                    }}>
+                    <InputBase value={textNote} 
+                        onChange={(e) => setTextNote(e.target.value)} 
+                        multiline placeholder="criar nota..." 
+                        sx={{
+                            padding: '0.5rem 1rem', fontSize: 'smaller', width: '100%',
+                        }}>
                     </InputBase>
                 </Box>
                 {textNote &&
-                    <IconButton aria-label="Adicionar Nota" sx={{alignSelf:'flex-end'}}>
+                    <IconButton type="submit" 
+                        aria-label="Adicionar Nota" 
+                        sx={{alignSelf:'flex-end'}}>
+
                         <AddIcon sx={{color:'#20f920'}}></AddIcon>
                     </IconButton>
                 }
