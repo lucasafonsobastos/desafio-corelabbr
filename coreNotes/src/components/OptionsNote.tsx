@@ -15,7 +15,7 @@ export interface OptionProps {
     notaId: number,
     onDelete: (id:number) => void,
     attCor: (id:number) => void,
-    attNota: (id:number)=> void,
+    attNota: (edit:boolean)=> void,
 }
 
 
@@ -33,6 +33,7 @@ function OptionsNote(props: OptionProps) {
     const [open, setOpen] = React.useState(false);
     const [selectedValue, setSelectedValue ] = React.useState(0);
     const [del, setDel] = React.useState(false);
+    //const [edit, setEdit] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true)
@@ -43,7 +44,6 @@ function OptionsNote(props: OptionProps) {
         setSelectedValue(selectedValue)
         //seta o valor da cor escolhida
         attCor(value);
-        attNota(value);
     }
 
     const handleClickDelete = () => {
@@ -55,6 +55,10 @@ function OptionsNote(props: OptionProps) {
         onDelete(notaId);
     }
 
+    const handleEditarNota = () => {
+        attNota(true);
+    }
+
     return (
         <Box sx={{
             display: 'flex',
@@ -62,7 +66,7 @@ function OptionsNote(props: OptionProps) {
             justifyContent: 'space-between',
         }}>
             <Box>
-                <IconButton >
+                <IconButton onClick={handleEditarNota}>
                     <EditIcon/>
                 </IconButton>
 

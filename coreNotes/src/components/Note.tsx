@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Box, IconButton, styled, TextField, Typography } from "@mui/material";
+import { Box, Button, IconButton, styled, Typography } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import CheckIcon from '@mui/icons-material/Check';
 import OptionsNote from "./OptionsNote";
 
 import { getCores, updateNota } from "../services/notaService";
@@ -20,7 +21,6 @@ const BlocoNota = styled(Box)(() => ({
     minHeight: '280px',
     width: '240px',
     overflow: 'hidden',
-    backgroundColor:'#FFFFFF'
 }));
 
 const Line = styled('span')(() => ({
@@ -29,9 +29,14 @@ const Line = styled('span')(() => ({
     backgroundColor: 'rgba(0,0,0, 0.2)',
 }));
 
-const TextConteudo = styled(TextField)(() => ({
-    display:'flex',
+const TextConteudo = styled('textarea')(() => ({
+    display: 'flex',
+    height: '98%',
+    width: '95%',
     backgroundColor:'transparent',
+    border: '0',
+    resize: 'none',
+    padding: '0.5rem'
 }));
 
 function Note (props: NotaProps) {
@@ -40,9 +45,10 @@ function Note (props: NotaProps) {
     //onAtualiza = Objeto{...}
 
     const [cores, setCores] = React.useState<any[]>([]);
-    const [newCor, setNewCor] = React.useState<number>(0);
 
     const [favorite, setFavorite] = React.useState(nota.favorito);
+
+    const [edit, setEdit] = React.useState(false);
 
     const notaAtualizada = nota;
 
@@ -106,18 +112,30 @@ function Note (props: NotaProps) {
 
             </Box>
             {corAtual != '' ? <Line sx={{backgroundColor:'#FFFFFF'}} /> : <Line/> }
-            <Box sx={{height:'70%'}}>
-                <TextConteudo>
-                    {nota.conteudo}
-                </TextConteudo>
+            <Box sx={{height:'100%', display: 'flex', flexDirection: 'column'}}>
+                {edit &&
+                    <>
+                        <TextConteudo></TextConteudo>
+                        <IconButton>
+                            <CheckIcon></CheckIcon>
+                        </IconButton>
+                    </>
+                }
+                {!edit &&
+                    <>
+                        <TextConteudo value={nota.conteudo} disabled />
+                        <OptionsNote 
+                            cores={cores} 
+                            notaId={nota.id} 
+                            onDelete={onDelete}
+                            attCor={fetchUpdateCor}
+                            attNota={setEdit}>
+                        </OptionsNote>
+                    </>
+                    
+                }
             </Box>
-            <OptionsNote 
-                cores={cores} 
-                notaId={nota.id} 
-                attCor={setNewCor}
-                onDelete={onDelete}
-                attNota={fetchUpdateCor}>
-            </OptionsNote>
+            
             
         </BlocoNota>
     )
