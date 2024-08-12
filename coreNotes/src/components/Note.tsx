@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Button, IconButton, styled, Typography } from "@mui/material";
+import { Box, Button, IconButton, sliderClasses, styled, Typography } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import CheckIcon from '@mui/icons-material/Check';
@@ -21,6 +21,7 @@ const BlocoNota = styled(Box)(() => ({
     minHeight: '280px',
     width: '240px',
     overflow: 'hidden',
+    margin:'1rem'
 }));
 
 const Line = styled('span')(() => ({
@@ -28,6 +29,16 @@ const Line = styled('span')(() => ({
     height: '2px',
     backgroundColor: 'rgba(0,0,0, 0.2)',
 }));
+
+const TextTitulo = styled('textarea')(() => ({
+    display: 'flex',
+    height: '2rem',
+    backgroundColor:'transparent',
+    border: '0',
+    resize: 'none',
+    fontSize: 'larger',
+    fontWeight:'bold',
+}))
 
 const TextConteudo = styled('textarea')(() => ({
     display: 'flex',
@@ -39,6 +50,7 @@ const TextConteudo = styled('textarea')(() => ({
     padding: '0.5rem'
 }));
 
+
 function Note (props: NotaProps) {
 
     const {nota, onDelete, onUpdate} = props;
@@ -49,6 +61,9 @@ function Note (props: NotaProps) {
     const [favorite, setFavorite] = React.useState(nota.favorito);
 
     const [edit, setEdit] = React.useState(false);
+
+    const [tituloNota, setTituloNota]= React.useState(nota.titulo);
+    const [textoNota, setTextoNota]= React.useState(nota.conteudo);
 
     const notaAtualizada = nota;
 
@@ -92,6 +107,21 @@ function Note (props: NotaProps) {
         fetchAtualiza();
     }
 
+    const onChangeTituloNota = (e: React.ChangeEvent) => {
+        setTituloNota(e.target.value);
+    }
+
+    const onChangeTextoNota = (e: React.ChangeEvent) => {
+        setTextoNota(e.target.value);
+    }
+
+    const onAtualizaConteuto = () => {
+        notaAtualizada.titulo= tituloNota;
+        notaAtualizada.conteudo = textoNota;
+        fetchAtualiza();
+        setEdit(false);
+    }
+
     const corAtual = cores.find(cor => cor.id === nota.cor_id)?.cor || '';
 
     return (
@@ -102,10 +132,12 @@ function Note (props: NotaProps) {
                 padding: '.2rem 1rem', 
                 justifyContent: 'space-between'
             }}>
-                <Typography sx={{
-                    padding: '0 .5rem', width: '100%'
-                }}> {nota.titulo}
-                </Typography>
+                {edit &&
+                    <TextTitulo rows={1} value={tituloNota} onChange={onChangeTituloNota}></TextTitulo>
+                }
+                {!edit &&
+                    <TextTitulo value={nota.titulo} disabled></TextTitulo>
+                }
                 <IconButton onClick={handleFavorito}>
                     {nota.favorito ? <StarIcon sx={{color:'#FFA000'}} /> : <StarBorderIcon/>}
                 </IconButton>
@@ -115,9 +147,9 @@ function Note (props: NotaProps) {
             <Box sx={{height:'100%', display: 'flex', flexDirection: 'column'}}>
                 {edit &&
                     <>
-                        <TextConteudo></TextConteudo>
+                        <TextConteudo value={textoNota} onChange={onChangeTextoNota}></TextConteudo>
                         <IconButton>
-                            <CheckIcon></CheckIcon>
+                            <CheckIcon onClick={onAtualizaConteuto}></CheckIcon>
                         </IconButton>
                     </>
                 }

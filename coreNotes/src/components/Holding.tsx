@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Container, Stack, styled, Typography } from "@mui/material";
+import { Box, Container, Stack, styled, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Note from "./Note";
 import NewNote from './NewNote';
 import { useNotasContext } from './NotasContext';
@@ -26,6 +26,9 @@ const Title = styled(Typography)(() => ({
 
 function Holding() {
     const { notas, setNotas } = useNotasContext();
+
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
     const fetchNotas = async () => {
         try {
@@ -64,7 +67,7 @@ function Holding() {
             <NewNote onAddNota={attNota} ></NewNote>
             </Box>
 
-            <Container maxWidth="lg">
+            <Container maxWidth='lg'>
                 <Title>Favoritas</Title>
                 <ItensStack direction="row" spacing={2} useFlexGap flexWrap="wrap">
                     {notas.map((nota: any) => (

@@ -59,3 +59,24 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.notas
     OWNER to postgres;
+
+
+-- INSERINDO DADOS ---
+INSERT INTO notas ( titulo, conteudo, cor_id, favorito) VALUES 
+('Titulo 1', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s', 1, TRUE),
+('Titulo 2', 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.', 0, FALSE),
+('Titulo 3', 'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.', 5, TRUE);
+
+INSERT INTO cores (id, cor) VALUES 
+(1, '#BAE2FF'),
+(2, '#B9FFDD'),
+(3, '#FFE8AC'),
+(4, '#FFCAB9'),
+(5, '#F99494'),
+(6, '#9DD6FF'),
+(7, '#ECA1FF'),
+(8, '#DAFF8B'),
+(9, '#FFA285'),
+(10, '#CDCDCD'),
+(11, '#979797'),
+(12, '#A99A7C');
