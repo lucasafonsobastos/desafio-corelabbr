@@ -122,7 +122,7 @@ function Note (props: NotaProps) {
         setEdit(false);
     }
 
-    const corAtual = cores.find(cor => cor.id === nota.cor_id)?.cor || '';
+    const corAtual = cores.find(cor => cor.id === nota.cor_id)?.cor || '#FFFFFF';
 
     return (
         <BlocoNota sx={{backgroundColor:corAtual}}>
@@ -144,7 +144,7 @@ function Note (props: NotaProps) {
                 </IconButton>
 
             </Box>
-            {corAtual != '' ? <Line sx={{backgroundColor:'#FFFFFF'}} /> : <Line/> }
+            {corAtual != '#FFFFFF' ? <Line sx={{backgroundColor:'#FFFFFF'}} /> : <Line/> }
             <Box sx={{height:'100%', display: 'flex', flexDirection: 'column'}}>
                 {edit &&
                     <>
