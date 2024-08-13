@@ -6,6 +6,10 @@
 
 Este projeto foi desenvolvido como parte de um desafio para a vaga de Desenvolvedor Júnior Full Stack React na **Coralab**.
 
+### Repositório raiz do desafio:
+[WEB](https://github.com/corelabbr/corelab-web-challenge)
+[API](https://github.com/corelabbr/corelab-api-challenge)
+
 ## Funcionalidades
 
 - **Criação de Notas:** Adicione notas com título, conteúdo e escolha se será favorita ou não.
@@ -74,3 +78,5 @@ O repositório do projeto está organizado da seguinte maneira:
    npm run dev
 
 7. Abra o navegador em http://localhost:3000 para acessar a aplicação.
+
+
