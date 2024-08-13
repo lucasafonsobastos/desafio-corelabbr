@@ -59,8 +59,8 @@ function Holding() {
             <Box sx={{
                 marginTop: '5rem',
                 display: 'flex' , 
-                alignContent: 'center', 
-                justifyContent: 'center'}}>
+                flexDirection:'column',
+                alignItems: 'center',}}>
             <NewNote onAddNota={attNota} ></NewNote>
             </Box>
 
