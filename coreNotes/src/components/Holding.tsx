@@ -82,7 +82,9 @@ function Holding() {
                     <Title>Outras</Title>
                     <ItensStack 
                     container
-                    columnSpacing={{sm:2, md: 3, lg: 4}}>
+                    columnSpacing={{sm:2, md: 3, lg: 4}}
+                    sx={{justifyContent: `${responsiveNotas ? 'center' : 'flex-start'}`}}
+                    >
                         {notas.map((nota: any) => (
                             !nota.favorito ? <Note key={nota.id} 
                             nota={nota} onDelete={removeNota} 
