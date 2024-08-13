@@ -51,5 +51,26 @@ O repositório do projeto está organizado da seguinte maneira:
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/coreNotes.git
+   git clone https://github.com/lucasafonsobastos/desafio-corelabbr.git
 
+2. Acesse a pasta Backend
+   ```bash
+    cd coreNotes/Backend
+    npm install
+
+3. Configure o banco de dados PostguesSQL com o arquvo fornecido `notasdb.sql`
+
+4. Inicie o servidor Express:
+   ```bash
+   npm run dev
+
+5. Acesse a pasta da aplicação `coreNotes/` e instale as dependecias:
+   ```bash
+   cd ..coreNotas/
+   npm install
+
+6. Execute o servidor dedesenvolvimento do front:
+   ```bash
+   npm run dev
+
+7. Abra o navegador em http://localhost:3000 para acessar a aplicação.
