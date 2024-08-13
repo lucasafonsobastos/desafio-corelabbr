@@ -1,4 +1,4 @@
-import { alpha, AppBar, Box, Button, Container, InputBase, styled, Toolbar, Typography } from "@mui/material";
+import { alpha, AppBar, Box, Button, InputBase, styled, Toolbar, Typography } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 
 const Logo = styled('img')(() => ({
@@ -10,7 +10,6 @@ const Search = styled('div')(({ theme }) =>({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    //backgroundColor: alpha(theme.palette.common.white, 1),
     boxShadow: '1px 1px 3px #D9D9D9',
     borderRadius: '4px',
     ':hover': {
@@ -27,7 +26,7 @@ const SearchInputStyled = styled(InputBase)(() => ({
 
 function Header() {
     return (  
-        <Container>
+        <>
             <Box sx={{ 
                 flexGrow: 1, 
                 display: 'flex', 
@@ -64,7 +63,7 @@ function Header() {
                     </Toolbar>
                 </AppBar>
             </Box>
-        </Container>
+        </>
     )
 }
 

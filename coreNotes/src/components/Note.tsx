@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Button, IconButton, sliderClasses, styled, Typography } from "@mui/material";
+import { Box, IconButton, styled } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import CheckIcon from '@mui/icons-material/Check';
@@ -36,8 +36,8 @@ const TextTitulo = styled('textarea')(() => ({
     backgroundColor:'transparent',
     border: '0',
     resize: 'none',
-    fontSize: 'larger',
     fontWeight:'bold',
+    maxLines:'1'
 }))
 
 const TextConteudo = styled('textarea')(() => ({
@@ -107,11 +107,11 @@ function Note (props: NotaProps) {
         fetchAtualiza();
     }
 
-    const onChangeTituloNota = (e: React.ChangeEvent) => {
+    const onChangeTituloNota = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTituloNota(e.target.value);
     }
 
-    const onChangeTextoNota = (e: React.ChangeEvent) => {
+    const onChangeTextoNota = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTextoNota(e.target.value);
     }
 
@@ -133,7 +133,8 @@ function Note (props: NotaProps) {
                 justifyContent: 'space-between'
             }}>
                 {edit &&
-                    <TextTitulo rows={1} value={tituloNota} onChange={onChangeTituloNota}></TextTitulo>
+                    <TextTitulo rows={1} value={tituloNota} 
+                    onChange={onChangeTituloNota} ></TextTitulo>
                 }
                 {!edit &&
                     <TextTitulo value={nota.titulo} disabled></TextTitulo>
@@ -148,8 +149,8 @@ function Note (props: NotaProps) {
                 {edit &&
                     <>
                         <TextConteudo value={textoNota} onChange={onChangeTextoNota}></TextConteudo>
-                        <IconButton>
-                            <CheckIcon onClick={onAtualizaConteuto}></CheckIcon>
+                        <IconButton onClick={onAtualizaConteuto}>
+                            <CheckIcon></CheckIcon>
                         </IconButton>
                     </>
                 }

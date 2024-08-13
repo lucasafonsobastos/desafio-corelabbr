@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Box, Container, Stack, styled, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Container, Grid, styled, Typography, useMediaQuery,} from "@mui/material";
 import Note from "./Note";
 import NewNote from './NewNote';
-import { useNotasContext } from './NotasContext';
 import { getNotas, deleteNote } from "../services/notaService";
 
 /* 
@@ -11,10 +10,9 @@ import Conteudo from '../../public/json/notas.json';
 const notas = Conteudo.notas;
 */
 
-const ItensStack = styled(Stack)(() =>({
-    display:'flex',
-    justifyContent:'center',
-    width:'100%'
+const ItensStack = styled(Grid)(() =>({
+    width:'100%',
+    minWidth: '200px',
 }));
 
 const Title = styled(Typography)(() => ({
@@ -25,10 +23,9 @@ const Title = styled(Typography)(() => ({
 
 
 function Holding() {
-    const { notas, setNotas } = useNotasContext();
-
-    const theme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
+    const [ notas, setNotas ] = React.useState([])
+    
+    const responsiveNotas = useMediaQuery('(max-width:900px)');
 
     const fetchNotas = async () => {
         try {
@@ -67,25 +64,40 @@ function Holding() {
             <NewNote onAddNota={attNota} ></NewNote>
             </Box>
 
-            <Container maxWidth='lg'>
-                <Title>Favoritas</Title>
-                <ItensStack direction="row" spacing={2} useFlexGap flexWrap="wrap">
-                    {notas.map((nota: any) => (
-                        nota.favorito ? <Note key={nota.id} 
-                        nota={nota} onDelete={removeNota} 
-                        onUpdate={attNota} /> : ''
-                    ))}
-                </ItensStack>
+            {notas.length > 0 &&
+                <Container maxWidth='lg'>
+                    <Title>Favoritas</Title>
+                    <ItensStack 
+                    container
+                    columnSpacing={{sm:2, md: 3, lg: 4}}
+                    sx={{justifyContent: `${responsiveNotas ? 'center' : 'flex-start'}`}}
+                    >
+                        {notas.map((nota: any) => (
+                            nota.favorito ? <Note key={nota.id} 
+                            nota={nota} onDelete={removeNota} 
+                            onUpdate={attNota} /> : ''
+                        ))}
+                    </ItensStack>
 
-                <Title>Outras</Title>
-                <ItensStack direction="row" spacing={2} useFlexGap flexWrap="wrap">
-                    {notas.map((nota: any) => (
-                        !nota.favorito ? <Note key={nota.id} 
-                        nota={nota} onDelete={removeNota} 
-                        onUpdate={attNota}/> : ''
-                    ))}
-                </ItensStack>
-            </Container>
+                    <Title>Outras</Title>
+                    <ItensStack 
+                    container
+                    columnSpacing={{sm:2, md: 3, lg: 4}}>
+                        {notas.map((nota: any) => (
+                            !nota.favorito ? <Note key={nota.id} 
+                            nota={nota} onDelete={removeNota} 
+                            onUpdate={attNota}/> : ''
+                        ))}
+                    </ItensStack>
+                </Container>
+            } {notas.length == 0 && 
+                <Box sx={{
+                    display:'flex', width:'100%', height:'50vh', 
+                    justifyContent:'center', alignItems:'center'
+                }}>
+                    <Typography>Ainda nao existem notas, tente criar uma.</Typography>
+                </Box>
+            }
         </>
     );
 }

@@ -4,17 +4,16 @@ import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import AddIcon from '@mui/icons-material/Add';
 import { createNota } from "../services/notaService";
-//import { useNotasContext } from "./NotasContext";
 
 
 const EditNota = styled('form')(() => ({
     display: 'flex',
     flexDirection: 'column',
     boxShadow: '1px 1px 5px #D9D9D9',
-    borderRadius: '20px',
-    minHeight: '105px',
-    width: '70%',
-    maxWidth: '530px',
+    borderRadius: '15px',
+    minHeight: '120px',
+    width: '70vw',
+    maxWidth: '500px' ,
     overflow: 'hidden',
     backgroundColor:'#FFFFFF'
 }));
@@ -23,10 +22,6 @@ const Line = styled('span')(() => ({
     width: '100%',
     height: '2px',
     backgroundColor: 'rgba(0,0,0, 0.2)',
-}));
-
-const BtFavorite = styled('div')(() => ({
-
 }));
 
 
@@ -38,7 +33,7 @@ function NewNote( {onAddNota }:{onAddNota: (nota:any) => void}){
     const [titleNote, setTitleNote] = React.useState('');
     const [textNote, setTextNote] = React.useState('');
 
-    //const [alert, setAlert] = React.useState(false);
+    const [alert, setAlert] = React.useState(false);
 
 
     const handleFavorite = () => {
@@ -59,31 +54,36 @@ function NewNote( {onAddNota }:{onAddNota: (nota:any) => void}){
         }
     }
 
+    //formulário para uma nova nota
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            // verificar se nao tem nenhuma opção vazia...
-            if(titleNote == '' || textNote == ''){
-                <Alert severity="warning">Sua Nota esta sem TÍTULO ou se CONTEUDO para ser salvo. Revise-a!</Alert>
-            } else {
+
+        if(titleNote == '' || textNote == ''){
+            setAlert(true);
+            //window.alert('Nota esta faltando Titulo ou Texto.')
+        } else {
+            try {
                 const novaNota = await createNota(titleNote, textNote, 0, favorite);
                 onAddNota(novaNota);
                 setTitleNote('');
                 setTextNote('');
                 setFavorite(false);
+                setAlert(false);
+            } catch (error) {
+                console.error('Erro ao criar nota', error);
             }
-
-        } catch (error) {
-            console.error('Erro ao criar nota', error);
-            <Alert severity="error">Erro ao criar a nota.</Alert>
         }
+
+        
     }
 
     return (
         <>
+            
             <EditNota onSubmit={handleSubmit}>
                 <Box sx={{
-                    display: 'flex', alignItems: 'center', padding: '.2rem 1rem', justifyContent: 'space-between'
+                    display: 'flex', alignItems: 'center', 
+                    justifyContent: 'space-between'
                 }}>
                     <InputBase value={titleNote} 
                         onChange={(e) => setTitleNote(e.target.value)} 
@@ -92,9 +92,9 @@ function NewNote( {onAddNota }:{onAddNota: (nota:any) => void}){
                             padding: '0 .5rem', width: '100%', textTransform:'uppercase'
                         }}>
                     </InputBase>
-                    <BtFavorite onClick={handleFavorite}>
+                    <IconButton onClick={handleFavorite}>
                         {isFavorite()}
-                    </BtFavorite>
+                    </IconButton>
                 </Box>
                 <Line></Line>
                 <Box>
@@ -116,6 +116,11 @@ function NewNote( {onAddNota }:{onAddNota: (nota:any) => void}){
                     </IconButton>
                 }
             </EditNota>
+            {alert && 
+                <Alert severity='warning'>
+                    Sua Nota esta faltando Título ou Texto. Revise-a.
+                </Alert>
+            }
         </>
     )
 }

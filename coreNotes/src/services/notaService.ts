@@ -30,7 +30,7 @@ export const createNota = async (titulo: string, conteudo: string, cor_id:number
     return await response.json();
 };
 
-export const updateNota = async (nota) => {
+export const updateNota = async (nota:any) => {
     const response = await fetch(`/api/notas/${nota.id}`, {
         method: 'PUT',
         headers: {

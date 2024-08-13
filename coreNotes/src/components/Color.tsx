@@ -1,5 +1,6 @@
-import * as React from 'react';
-import { Box, Dialog, styled, Stack, IconButton } from "@mui/material";
+import { Box, Dialog, styled, Stack, IconButton, useMediaQuery } from "@mui/material";
+
+
 
 export interface ColorProps{
     open: boolean;
@@ -15,8 +16,6 @@ const CoresSpan = styled(Box)(() => ({
 
 }));
 
-
-
 const ItemCor = styled(IconButton)(() => ({
     padding: '2px',
     ':hover': {
@@ -26,8 +25,10 @@ const ItemCor = styled(IconButton)(() => ({
 
 
 function Color(props: ColorProps) {
-
+    
     const {onClose, selectedValue, open, cores} = props;
+
+    const responsiveCores = useMediaQuery('(max-width:600px)');
 
     const handleCLose = () => {
         onClose(selectedValue);
@@ -41,9 +42,12 @@ function Color(props: ColorProps) {
 
     return (
         <Dialog onClose={handleCLose} open={open} >
-            <Stack spacing={{xs: 1, sm: 2}} 
-            direction='row' useFlexGap flexWrap='wrap'
-            sx={{ display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+            <Stack  
+                direction='row' useFlexGap flexWrap='wrap'
+                sx={{ display:'flex', alignItems:'center',
+                justifyContent:'space-around',
+                width: `${responsiveCores ? '210px' : '450px'}` }}>
+                
                 {cores.map((item)=> {
                     return <ItemCor 
                         key={item.cor} onClick={() => handleListItemClick(item.id)} >
